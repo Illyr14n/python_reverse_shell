@@ -8,13 +8,15 @@ try:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)#creates a ipv4 socket
     s.connect((ip, port))#connects to the ip and port
     cmdlet = input("$")
-    while cmdlet!= "exit":
-        s.send(cmdlet.encode("utf-8")) #sends the cmdlet to the server
-        results = s.recv(1024).decode("utf-8")#receives the results from the server
-        print(results)
-        cmdlet = input("$")#resets the cmdlet
+    while True:
+        cmdlet = input("$ ")
+        if cmdlet.lower() == "exit":
+            break
 
+        s.send(cmdlet.encode("utf-8"))
+        results = s.recv(1024).decode("utf-8")
+        print(results)
 
     s.close()
-except:
-    print("Connection failed")
+except Exception as e:
+    print("Connection failed:", str(e))
